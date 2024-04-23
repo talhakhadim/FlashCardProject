@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
+const morgan= require('morgan');
 require('dotenv').config();
 
 const flashcardRoutes = require('./routes/flashcardRoutes');
@@ -16,6 +17,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cors({origin: '*'}));
+app.use(morgan('dev'));
 app.use('/api/flashcards', flashcardRoutes);
 app.use('/api/users', userRoutes);
 
