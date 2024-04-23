@@ -3,11 +3,26 @@ const app = express()
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 5000;
+const cors = require('cors');
 require('dotenv').config();
+
+const flashcardRoutes = require('./routes/flashcardRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 
 
 connectDB();
+
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use(cors({origin: '*'}));
+app.use('/api/flashcards', flashcardRoutes);
+app.use('/api/users', userRoutes);
+
+
+app.get('/', (req, res) => {
+    res.send('FlashCard API');
+})
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
@@ -15,9 +30,6 @@ mongoose.connection.once('open', () => {
 }
     )
 
-
-
-const flashcardRoutes = require('./routes/flashcardRoutes');
 
 
 

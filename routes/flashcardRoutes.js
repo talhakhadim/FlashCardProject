@@ -1,9 +1,8 @@
 const express = require('express');
-const router = express.Router();
+const flashCardController = require('../controllers/flashCardController');
+const flashCardRouter = express.Router();
 
-router.get('/', (req, res) => {
-   
-  });
+flashCardRouter.get('/', flashCardController.getFlashcards);
   
-  module.exports = router;
+module.exports = flashCardRouter;
   

@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
 
-//DATABASE_URI=mongodb+srv://admin:pass12345@cluster0.qza6fel.mongodb.net/flashcarddb?retryWrites=true&w=majority&appName=Cluster0
+// DATABASE_URI=mongodb+srv://admin:6yLnMHI1NjsDUrGc@cluster0.qza6fel.mongodb.net/flashcards_db?retryWrites=true&w=majority
 
 
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.DATABASE_URI, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true
-        });
+        await mongoose.connect(process.env.DATABASE_URI);
     }   catch (err){
         console.error(err);
     }
