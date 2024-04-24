@@ -36,10 +36,10 @@
       <li class="fas fa-bars"></li>
     </header>
     <main class="signup-body">
-	&nbsp;
-	&nbsp;
+	<!-- &nbsp;
+	&nbsp; -->
            
-<section class="signup">
+<!-- <section class="signup">
 <div class="container-signup">
   <h1>Sign Up</h1>
     <div class ="signup-wrapper">
@@ -48,7 +48,7 @@
 		    &nbsp;
 		    &nbsp;
 
-        <h3>Enter User Information For Account Creation Below:</h3>
+        <h3 class="signup-heading">Enter User Information For Account Creation Below:</h3>
           <form>
 
             <div class="container-signup">
@@ -104,46 +104,83 @@
 
       </div>
     </div>        
-    </section>  
+    </section>   -->
+    <section class="signup">
+      <div class="container-signup">
+        <h2>Sign Up</h2>
+        <form  id="signup-form">
+          <h4 class="signup-heading">Enter User Information For Account Creation Below</h4>
+          <label for="email">Email</label>
+          <input type="text" id="email" placeholder="Enter Email" name="email" required>
+          <label for="psw">Password</label>
+          <input type="password" id="psw" placeholder="Enter Password" name="psw" required>
+          <label for="psw-repeat">Repeat Password</label>
+          <input type="password" id="psw-repeat" placeholder="Repeat Password" name="psw-repeat" required>
+          <label>
+            <input class="rememberme" type="checkbox"> Remember Me
+          </label>
+          <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+          <div class="button-container">
+            <a class="cancel" href="index.html"><button type="button" class="cancelbtn">Cancel</button></a>
+            <a href="confirmation.html"><button type="submit" class="signupbtn">Sign Up</button></a>
+          </div>
+        </form>
+        <p class="login-link">Already have an account? <a href="login.html" style="color:dodgerblue">Login here</a></p>
+      </div>
+    </section>
 	</div>
 </main>
   
 <script>
   document.getElementById("signup-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent form submission
-
+  
     // Get form values
     var email = document.querySelector('input[name="email"]').value;
     var password = document.querySelector('input[name="psw"]').value;
     var repeatPassword = document.querySelector('input[name="psw-repeat"]').value;
-
+  
     // Perform form validation
-    if (email === "") {
-      alert("Please enter your email.");
+    if (email === "" || password === "" || repeatPassword === "") {
+      alert("Please fill out all fields.");
       return;
     }
-
-    if (password === "") {
-      alert("Please enter your password.");
-      return;
-    }
-
-    if (repeatPassword === "") {
-      alert("Please repeat your password.");
-      return;
-    }
-
+  
     if (password !== repeatPassword) {
       alert("Passwords do not match.");
       return;
     }
+  
+    // Form is valid, proceed with API call
+    const baseUrl = 'http://localhost:5000/api';
+    fetch( `${baseUrl}/users/signUp` , {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+    .then(response => {
+  if (!response.ok) {
+    return response.json().then(data => Promise.reject(data));
+  }
+  return response.json();
+})
+.then(data => {
+  // make user login in local storage 
+  localStorage.setItem('user', JSON.stringify(data.email));
 
-    // Form is valid, proceed with submission
-    alert("Form submitted successfully!");
-    window.location.href = "index.html";
-
-    // You can add your own logic here, such as sending the form data to a server
-
+  // Redirect to confirmation page
+  window.location.href = 'index.html';
+})
+.catch(error => {
+  // Show error message
+  alert(error.msg);
+});
+  
     // Reset form
     document.getElementById("signup-form").reset();
   });

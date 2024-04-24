@@ -6,14 +6,14 @@ const flashcardSchema = new mongoose.Schema({
     required: true
   },
   flashcards: [{
-    term: {
-      type: String,
-      required: true
-    },
     definition: {
       type: String,
       required: true
-    }
+    },
+    answer: {
+      type: String,
+      required: true
+    },
   }]
 });
 
